@@ -5,6 +5,8 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
+import ProblemList from './pages/ProblemList'
+import EditProblem from './pages/UpdateProblem'
 import axios from 'axios'
 import { Toaster } from 'react-hot-toast'
 import {UserContextProvider} from '../context/userContext'
@@ -22,6 +24,9 @@ function App() {
         <Route path ='/login' element={<Login/>} />
         <Route path ='/register' element={<Register/>} />
         <Route path ='/dashboard' element={<Dashboard/>} />
+        <Route path ='/problems' element={<ProblemList/>} />
+        <Route path="/problems/:id" element={<EditProblem />} />
+
       </Routes>
     </UserContextProvider>
   )
