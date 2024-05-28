@@ -1,8 +1,6 @@
-// ProblemList.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'; // Import Link from React Router
+import { Link } from 'react-router-dom';
 import '../CSS/ProblemList.css'; 
 
 const ProblemList = () => {
@@ -18,6 +16,23 @@ const ProblemList = () => {
             });
     }, []);
 
+    const handleDelete = async (id) => {
+        // Ask the user to confirm the deletion
+        const confirmDelete = window.confirm('Are you sure you want to delete this problem?');
+        if (!confirmDelete) {
+            return; // If user cancels, do nothing
+        }
+
+        try {
+            await axios.delete(`http://localhost:5000/problems/${id}`);
+            // Update state by removing the deleted problem
+            setProblems(problems.filter(problem => problem._id !== id));
+            console.log('Problem deleted successfully');
+        } catch (error) {
+            console.error('Error deleting problem:', error);
+        }
+    };
+
     return (
         <div>
             <h1>Problem List</h1>
@@ -26,9 +41,9 @@ const ProblemList = () => {
                     <li key={problem._id}>
                         <h2>{problem.title}</h2>
                         <p>{problem.description}</p>
-                        {/* Use Link component to navigate to edit page */}
                         <Link to={`/problems/${problem._id}`}>Edit</Link>
-                        <button>Delete</button>
+                        {/* Pass the problem ID to the handleDelete function */}
+                        <button onClick={() => handleDelete(problem._id)}>Delete</button>
                     </li>
                 ))}
             </ul>
@@ -37,3 +52,5 @@ const ProblemList = () => {
 };
 
 export default ProblemList;
+
+
