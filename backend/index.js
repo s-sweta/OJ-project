@@ -22,7 +22,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.use('/', require('./routes/authRoutes'));
-app.use('/problems', require('./routes/problemRoutes')); // Add '/problems' prefix
+app.use('/problems', require('./routes/problemRoutes'));
+app.use("/run", require('./routes/compilerRoutes'))
 
 // Error handling middleware (move to the end)
 app.use((err, req, res, next) => {
