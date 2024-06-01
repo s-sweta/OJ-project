@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useUser } from '../../context/userContext';
+import '../CSS/login.css'
 
 export default function Login() {
     const { loginUser } = useUser();
@@ -20,7 +21,7 @@ export default function Login() {
     };
 
     return (
-        <div>
+        <div className='login-container'>
             <form onSubmit={handleLogin}>
                 <label>Email</label>
                 <input

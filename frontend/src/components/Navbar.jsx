@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../../context/userContext';
+import '../CSS/Navbar.css'
 
 export default function Navbar() {
     const { user, logout } = useUser();
@@ -12,7 +13,7 @@ export default function Navbar() {
                 <>
                     
                     <button onClick={logout}>Logout</button>
-                    <Link to="/dashboard"><span>{user.name}!</span></Link>
+                    <Link to="/dashboard"><span>{user.name}</span></Link>
                 </>
             ) : (
                 <>

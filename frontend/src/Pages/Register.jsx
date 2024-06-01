@@ -3,6 +3,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import '../CSS/register.css'
 
 export default function Register() {
     const navigate = useNavigate()
@@ -32,7 +33,7 @@ export default function Register() {
         }
     }
   return (
-    <div>
+    <div className='register-container'>
         <form onSubmit={registerUser}>
             <label> Name </label>
             <input type='text' placeholder='Enter your name' value={data.name} onChange={(e) => setData({...data, name: e.target.value})} />

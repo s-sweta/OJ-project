@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import '../CSS/addProblem.css'
 
 const AddProblem = () => {
     const [formData, setFormData] = useState({
@@ -32,7 +33,7 @@ const AddProblem = () => {
     };
 
     return (
-        <div>
+        <div className='add-problem-container'>
             <h2>Add New Problem</h2>
             <form onSubmit={handleSubmit}>
                 <label>Title:</label>

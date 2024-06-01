@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import '../CSS/problem.css'
 
 const ProblemPage = () => {
     const { id } = useParams(); 
@@ -60,7 +61,7 @@ const ProblemPage = () => {
                 <p>Description: {description}</p>
                 <p>Difficulty: {difficulty}</p>
             </div>
-            <div>
+            <div className="code-editor">
                 <form onSubmit={handleSubmit}>
                     <label>
                     Language:

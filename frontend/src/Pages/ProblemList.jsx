@@ -34,9 +34,9 @@ const ProblemList = () => {
     };
 
     return (
-        <div>
+        <div className='problem-list'>
             <h1>Problem List</h1>
-            <ul>
+            <ul className='problem'>
                 {problems.map(problem => (
                     <li key={problem._id}>
                         <h2>{problem.title}</h2>

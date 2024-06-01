@@ -1,0 +1,47 @@
+.add-problem-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-problem-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .add-problem-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-problem-container label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .add-problem-container input,
+  .add-problem-container textarea,
+  .add-problem-container select {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .add-problem-container button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-problem-container button:hover {
+    background-color: #0056b3;
+  }
+  

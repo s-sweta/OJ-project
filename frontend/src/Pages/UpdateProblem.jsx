@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import '../CSS/updateProblem.css'//frontend\src\CSS\updateProblem.css
 
 const UpdateProblem = () => {
   const navigate = useNavigate();

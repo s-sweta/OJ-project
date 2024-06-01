@@ -26,7 +26,7 @@ const problemsSchema = new mongoose.Schema({
       type: String,
       default: null,
       trim: true,
-      // required: [true, "Problem sample input is required"],
+      
     },
   },
   output: {
@@ -35,7 +35,7 @@ const problemsSchema = new mongoose.Schema({
       type: String,
       default: null,
       trim: true,
-      // required: [true, "Problem sample output is required"],
+      
     },
   },
   testcases: {
@@ -71,7 +71,7 @@ const problemsSchema = new mongoose.Schema({
           },
           submissionDateTime: {
             type: Date,
-            default: Date.now, // Example of using a function for default value
+            default: Date.now,
           },
           timeTaken: {
             type: Number,
