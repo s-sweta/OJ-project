@@ -44,25 +44,37 @@ const generateFile = (language, code) => {
   const executeCode = (filePath) => {
     const outputPath = path.join(__dirname, "outputs");
 
-    if(!fs.existsSync(outputPath)) {
+    if (!fs.existsSync(outputPath)) {
         fs.mkdirSync(outputPath, { recursive: true });
     }
 
     const jobId = path.basename(filePath).split(".")[0];
-    const outputFilename = `${jobId}.exe`
+    const outputFilename = `${jobId}.out`;
     const outPath = path.join(outputPath, outputFilename);
 
-    return new Promise ((resolve, reject) => {
-        exec(`g++ ${filePath} -o ${outPath} && cd ${outputPath} && .\\${outputFilename}`, 
-        (error, stdout, stderr) => {
-                if(error) {
-                    reject(error);
-                }
-                if(stderr){
-                    reject(stderr);
-                }
-                resolve(stdout);
-            });
+    let command;
+    if (filePath.endsWith(".cpp")) {
+        command = `g++ ${filePath} -o ${outPath} && cd ${outputPath} && ./${jobId}`;
+    } else if (filePath.endsWith(".java")) {
+        command = `javac ${filePath} && java -cp ${outputPath} ${jobId}`;
+    } else if (filePath.endsWith(".py")) {
+        command = `python ${filePath}`;
+    } else if (filePath.endsWith(".js")) {
+        command = `node ${filePath}`;
+    } else {
+        return Promise.reject(new Error("Unsupported file type"));
+    }
+
+    return new Promise((resolve, reject) => {
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                reject(error);
+            }
+            if (stderr) {
+                reject(stderr);
+            }
+            resolve(stdout);
+        });
     });
 };
 
