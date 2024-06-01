@@ -58,8 +58,8 @@ const ProblemPage = () => {
         <div className="problem-page">
             <div className="problem-details">
                 <h2>{title}</h2>
-                <p>Description: {description}</p>
-                <p>Difficulty: {difficulty}</p>
+                <p><b>Description: </b><br/>{description}</p>
+                <p><b>Difficulty: </b><br/>{difficulty}</p>
             </div>
             <div className="code-editor">
                 <form onSubmit={handleSubmit}>
