@@ -74,7 +74,7 @@ module.exports.runCode = async (req, res) => {
 
     try {
         const filePath = generateFile(language, code);
-        const output = await executeCpp(filePath);
+        const output = await executeCode(filePath);
         res.json({ filePath, output });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });

@@ -21,12 +21,7 @@ const problemsSchema = new mongoose.Schema({
     required: [true, "Problem difficulty is required"],
   },
   input: {
-    constraints: {
-      type: String,
-      default: null,
-      trim: true,
-      // required: [true, "Problem constraints is required"],
-    },
+    
     sample: {
       type: String,
       default: null,
@@ -35,12 +30,7 @@ const problemsSchema = new mongoose.Schema({
     },
   },
   output: {
-    constraints: {
-      type: String,
-      default: null,
-      trim: true,
-      // required: [true, "Output constraints is required"],
-    },
+    
     sample: {
       type: String,
       default: null,

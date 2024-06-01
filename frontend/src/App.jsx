@@ -8,9 +8,11 @@ import Dashboard from './pages/Dashboard'
 import ProblemList from './pages/ProblemList'
 import EditProblem from './pages/UpdateProblem'
 import AddProblem from './pages/AddProblem'
+import ProblemPage from './pages/problem'
+import { UserProvider } from '../context/userContext'
 import axios from 'axios'
 import { Toaster } from 'react-hot-toast'
-import {UserContextProvider} from '../context/userContext'
+
 
 
 axios.defaults.baseURL = 'http://localhost:5000';
@@ -18,8 +20,8 @@ axios.defaults.withCredentials = true;
 
 function App() {
   return (
-    <UserContextProvider>
-      <Navbar />
+    <UserProvider>
+    <Navbar />
       <Toaster position='bottom-left' toastOptions={{duration: 2000}} />
       <Routes>
         <Route path ='/' element={<Home/>} />
@@ -29,9 +31,12 @@ function App() {
         <Route path ='/problems' element={<ProblemList/>} />
         <Route path="/problems/:id" element={<EditProblem />} />
         <Route path="/addProblem" element={<AddProblem />} />
+        <Route path="/run/:id" element={<ProblemPage/>}/>
 
       </Routes>
-    </UserContextProvider>
+      </UserProvider>
+      
+    
   )
 }
 
