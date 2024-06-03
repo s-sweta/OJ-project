@@ -10,6 +10,7 @@ const ProblemPage = () => {
     const [language, setLanguage] = useState('cpp');
     const [output, setOutput] = useState('');
     const [error, setError] = useState('');
+    const [input, setInput] = useState(''); // New state for input field value
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -38,13 +39,17 @@ const ProblemPage = () => {
         setCode(e.target.value);
     };
 
+    const handleInputChange = (e) => {
+        setInput(e.target.value);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
           const response = await fetch('http://localhost:5000/run', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ language, code }),
+            body: JSON.stringify({ language, code, input }), // Include input in the request body
           });
           const data = await response.json();
           setOutput(data.output);
@@ -64,22 +69,28 @@ const ProblemPage = () => {
             <div className="code-editor">
                 <form onSubmit={handleSubmit}>
                     <label>
-                    Language:
+                        Language:
                         <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-                        <option value="cpp">C++</option>
-                        <option value="java">Java</option>
-                        <option value="python">Python</option>
-                        <option value="javascript">JavaScript</option>
-                    </select>
+                            <option value="cpp">C++</option>
+                            <option value="java">Java</option>
+                            <option value="python">Python</option>
+                            <option value="javascript">JavaScript</option>
+                        </select>
                     </label>
                     <br />
-                    <textarea value={code} onChange={(e) => setCode(e.target.value)} />
+                    <textarea value={code} onChange={handleCodeChange} />
+                    <br />
+                    {/* Input field */}
+                    <label>
+                        Input:
+                        <input type="text" value={input} onChange={handleInputChange} />
+                    </label>
                     <br />
                     <button type="submit">Run</button>
                 </form>
                 <div>
                     {output && <pre>{output}</pre>}
-                    {error && <div style={{ color: 'ed' }}>{error}</div>}
+                    {error && <div style={{ color: 'red' }}>{error}</div>}
                 </div>
             </div>
         </div>
@@ -87,3 +98,4 @@ const ProblemPage = () => {
 }
 
 export default ProblemPage;
+
