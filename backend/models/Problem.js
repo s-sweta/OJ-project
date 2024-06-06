@@ -1,5 +1,15 @@
 const mongoose = require("mongoose");
-const User = require("./User.js");
+
+const testCaseSchema = new mongoose.Schema({
+  input: {
+    type: String,
+    required: true,
+  },
+  expectedOutput: {
+    type: String,
+    required: true,
+  },
+});
 
 const problemsSchema = new mongoose.Schema({
   title: {
@@ -20,67 +30,18 @@ const problemsSchema = new mongoose.Schema({
     trim: true,
     required: [true, "Problem difficulty is required"],
   },
-  input: {
-    
-    sample: {
-      type: String,
-      default: null,
-      trim: true,
-      
-    },
+  sampleInput: {
+    type: String,
+    default: null,
+    trim: true,
   },
-  output: {
-    
-    sample: {
-      type: String,
-      default: null,
-      trim: true,
-      
-    },
+  sampleOutput: {
+    type: String,
+    default: null,
+    trim: true,
   },
-  testcases: {
-    input: {
-      type: String,
-      default: null,
-      trim: true,
-    },
-    output: {
-      type: String,
-      default: null,
-      trim: true,
-    },
-  },
-  submissions: {
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: User,
-      default: null,
-      submission: [
-        {
-          language: {
-            type: String,
-            default: null,
-          },
-          solution: {
-            type: String,
-            default: null,
-          },
-          verdict: {
-            type: String,
-            default: null,
-          },
-          submissionDateTime: {
-            type: Date,
-            default: Date.now,
-          },
-          timeTaken: {
-            type: Number,
-            default: 0,
-          },
-        },
-      ],
-    },
-  },
-}, { timestamps: true }); // Adding timestamps for createdAt and updatedAt
+  testCases: [testCaseSchema], // Array of test cases
+}, { timestamps: true });
 
 module.exports = mongoose.model("Problem", problemsSchema);
+

@@ -41,7 +41,7 @@ const ProblemList = () => {
                     <li key={problem._id}>
                         <h2>{problem.title}</h2>
                         
-                        <Link to={`/run/${problem._id}`}>Solve</Link>
+                        <Link to={`/problem/${problem._id}`}>Solve</Link>
                         <Link to={`/problems/${problem._id}`}>Edit</Link>
                         <button onClick={() => handleDelete(problem._id)}>Delete</button>
                     </li>

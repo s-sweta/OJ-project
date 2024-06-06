@@ -1,22 +1,24 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useUser } from '../../context/userContext';
 import '../CSS/problem.css'
 
 const ProblemPage = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
+    const { user } = useUser();
+    const userId = user ? user.userId : null;
 
     const [code, setCode] = useState('');
     const [language, setLanguage] = useState('cpp');
     const [output, setOutput] = useState('');
     const [error, setError] = useState('');
-    const [input, setInput] = useState(''); // New state for input field value
+    const [input, setInput] = useState(''); 
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [difficulty, setDifficulty] = useState('');
 
-    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -59,6 +61,16 @@ const ProblemPage = () => {
         }
       };
 
+      const handleCodeSubmit = async () => {
+        try {
+            const response = await axios.post(`http://localhost:5000/submit/${id}`, { language, code });
+            console.log(response.data);
+            // Handle success
+        } catch (error) {
+            setError(error.response.data.error);
+        }
+    };
+
     return (
         <div className="problem-page">
             <div className="problem-details">
@@ -80,22 +92,25 @@ const ProblemPage = () => {
                     <br />
                     <textarea value={code} onChange={handleCodeChange} />
                     <br />
-                    {/* Input field */}
+                    
                     <label>
                         Input:
                         <input type="text" value={input} onChange={handleInputChange} />
                     </label>
                     <br />
-                    <button type="submit">Run</button>
+                    <button type="submit">Run</button> 
                 </form>
                 <div>
                     {output && <pre>{output}</pre>}
                     {error && <div style={{ color: 'red' }}>{error}</div>}
                 </div>
+                <button onClick={handleCodeSubmit}>Submit Code</button> 
             </div>
         </div>
     );
 }
 
 export default ProblemPage;
+
+
 

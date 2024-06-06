@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import '../CSS/updateProblem.css'//frontend\src\CSS\updateProblem.css
+import '../CSS/updateProblem.css';
 
 const UpdateProblem = () => {
   const navigate = useNavigate();
@@ -11,6 +11,9 @@ const UpdateProblem = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [difficulty, setDifficulty] = useState("");
+  
+  // State for test cases
+  const [testCases, setTestCases] = useState([{ input: '', expectedOutput: '' }]);
 
   // Effect to fetch problem details on component mount
   useEffect(() => {
@@ -19,11 +22,12 @@ const UpdateProblem = () => {
         const response = await axios.get(`http://localhost:5000/problems/${id}`, {
           withCredentials: true,
         });
-        const { title, description, difficulty } = response.data;
+        const { title, description, difficulty, testCases } = response.data;
         
         setTitle(title);
         setDescription(description);
         setDifficulty(difficulty);
+        setTestCases(testCases || [{ input: '', expectedOutput: '' }]); // Initialize test cases, or set empty array if not provided
       } catch (error) {
         console.error("Error fetching problem:", error);
       }
@@ -34,7 +38,7 @@ const UpdateProblem = () => {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedProblem = { title, description, difficulty };
+    const updatedProblem = { title, description, difficulty, testCases };
     try {
       // Send PUT request to update problem
       await axios.put(`http://localhost:5000/problems/${id}`, updatedProblem, {
@@ -47,11 +51,23 @@ const UpdateProblem = () => {
     }
   };
 
+  // Function to handle changes in test case input fields
+  const handleTestCaseChange = (index, field, value) => {
+    const updatedTestCases = [...testCases];
+    updatedTestCases[index][field] = value;
+    setTestCases(updatedTestCases);
+  };
+
+  // Function to add new test case
+  const handleAddTestCase = () => {
+    setTestCases([...testCases, { input: '', expectedOutput: '' }]);
+  };
+
   return (
     <div className="update-form-container">
       <h2>Update Problem</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+      <div className="form-group">
           <label className="form-label" htmlFor="title">
             Title:
           </label>
@@ -92,6 +108,28 @@ const UpdateProblem = () => {
             <option value="hard">Hard</option>
           </select>
         </div>
+        
+       
+        <div className="test-cases">
+          {testCases.map((testCase, index) => (
+            <div key={index} className="test-case">
+              <input
+                type="text"
+                value={testCase.input}
+                onChange={(e) => handleTestCaseChange(index, 'input', e.target.value)}
+                placeholder="Test Case Input"
+              />
+              <input
+                type="text"
+                value={testCase.expectedOutput}
+                onChange={(e) => handleTestCaseChange(index, 'expectedOutput', e.target.value)}
+                placeholder="Expected Output"
+              />
+            </div>
+          ))}
+          <button type="button" onClick={handleAddTestCase}>Add Test Case</button>
+        </div>
+        
         <button className="submit-button" type="submit">
           Submit
         </button>
@@ -101,5 +139,8 @@ const UpdateProblem = () => {
 };
 
 export default UpdateProblem;
+
+
+
 
 

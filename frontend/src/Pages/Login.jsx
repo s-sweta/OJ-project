@@ -1,44 +1,48 @@
+
 import React, { useState } from 'react';
-import { toast } from 'react-hot-toast';
-import { useUser } from '../../context/userContext';
-import '../CSS/login.css'
+import axios from 'axios';
 
-export default function Login() {
-    const { loginUser } = useUser();
-    const [data, setData] = useState({
-        email: '',
-        password: '',
-    });
+const Login = () => {
+    const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
+  const [error, setError] = useState(null);
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-            await loginUser(data);
-        } catch (error) {
-            console.error('Error logging in:', error);
-            toast.error('Login Failed');
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/login', {
+        email,
+        password
+      });
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      window.location.href = '/';
+    } catch (error) {
+      setError(error.response.data.error);
+    }
+  };
 
-    return (
-        <div className='login-container'>
-            <form onSubmit={handleLogin}>
-                <label>Email</label>
-                <input
-                    type='email'
-                    placeholder='Enter your email'
-                    value={data.email}
-                    onChange={(e) => setData({ ...data, email: e.target.value })}
-                />
-                <label>Password</label>
-                <input
-                    type='password'
-                    placeholder='Password'
-                    value={data.password}
-                    onChange={(e) => setData({ ...data, password: e.target.value })}
-                />
-                <button type='submit'>Login</button>
-            </form>
-        </div>
-    );
-}
+  return (
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
+      <label>
+          email:
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </label>
+        <br />
+        
+        <label>
+          Password:
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </label>
+        <br />
+        <button type="submit">Login</button>
+      </form>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+    </div>
+  );
+};
+
+export default Login;

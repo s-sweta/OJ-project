@@ -36,46 +36,52 @@ const generateFile = (language, code) => {
     return filePath;
 };
 
-const executeCode = (filePath, inputPath) => {
+const executeCode = (filePath, inputPath, timeLimit) => {
     const outputPath = path.join(__dirname, "outputs");
-
+  
     if (!fs.existsSync(outputPath)) {
-        fs.mkdirSync(outputPath, { recursive: true });
+      fs.mkdirSync(outputPath, { recursive: true });
     }
-
+  
     const jobId = path.basename(filePath, path.extname(filePath));
-
+  
     let command;
     switch (path.extname(filePath)) {
-        case '.cpp':
-            const outPathCpp = path.join(outputPath, `${jobId}.exe`);
-            command = `g++ ${filePath} -o ${outPathCpp} && ${outPathCpp} < ${inputPath}`;
-            break;
-        case '.java':
-            command = `javac ${filePath} && java -cp ${outputPath} ${jobId} < ${inputPath}`;
-            break;
-        case '.py':
-            command = `python ${filePath} < ${inputPath}`;
-            break;
-        case '.js':
-            command = `node ${filePath} < ${inputPath}`;
-            break;
-        default:
-            return Promise.reject(new Error("Unsupported file type"));
+      case '.cpp':
+        const outPathCpp = path.join(outputPath, `${jobId}.exe`);
+        command = `g++ ${filePath} -o ${outPathCpp} && ${outPathCpp} < ${inputPath}`;
+        break;
+      case '.java':
+        command = `javac ${filePath} && java -cp ${outputPath} ${jobId} < ${inputPath}`;
+        break;
+      case '.py':
+        command = `python ${filePath} < ${inputPath}`;
+        break;
+      case '.js':
+        command = `node ${filePath} < ${inputPath}`;
+        break;
+      default:
+        return Promise.reject(new Error("Unsupported file type"));
     }
-
+  
     return new Promise((resolve, reject) => {
-        exec(command, (error, stdout, stderr) => {
-            if (error) {
-                reject(error);
-            }
-            if (stderr) {
-                reject(stderr);
-            }
-            resolve(stdout);
-        });
+      const timeout = setTimeout(() => {
+        reject(new Error("Time Limit Exceeded"));
+      }, timeLimit * 1000); // Convert time limit from seconds to milliseconds
+  
+      exec(command, (error, stdout, stderr) => {
+        clearTimeout(timeout); // Clear the timeout when the command finishes executing
+  
+        if (error) {
+          reject(error);
+        }
+        if (stderr) {
+          reject(stderr);
+        }
+        resolve(stdout);
+      });
     });
-};
+  };
 
 const generateInputFile = async (input) => {
     const dirInputs = path.join(__dirname, 'inputs');
@@ -100,7 +106,7 @@ module.exports.runCode = async (req, res) => {
     try {
         const filePath = generateFile(language, code);
         const inputPath = await generateInputFile(input);
-        const output = await executeCode(filePath, inputPath);
+        const output = await executeCode(filePath, inputPath, 5);
         res.json({ filePath, inputPath, output });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });

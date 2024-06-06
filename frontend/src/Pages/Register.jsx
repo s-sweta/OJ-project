@@ -1,49 +1,67 @@
-import React from 'react';
-import { useState } from 'react';
+// src/Register.js
+import React, { useState } from 'react';
 import axios from 'axios';
-import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import '../CSS/register.css'
 
-export default function Register() {
-    const navigate = useNavigate()
-    const [data, setData] = useState({
-        name: '',
-        email: '',
-        password: '',
-    })
+const Register = () => {
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordVerify, setPasswordVerify] = useState('');
+  const [error, setError] = useState(null);
 
-    const registerUser = async (e) => {
-        e.preventDefault();
-        const {name, email, password} = data
-        try {
-            const {data} = await axios.post('/register', {
-                name, email, password
-            })
-            if(data.error) {
-                toast.error(data.error)
-            } else {
-                setData({})
-                toast.success('Registered Successfully!')
-                navigate('/login')
-            }
-        } catch (error) {
-            console.log(error)
-            
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/register', {
+        name,
+        username,
+        email,
+        password,
+        passwordVerify,
+      });
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      window.location.href = '/';
+    } catch (error) {
+      setError(error.response.data.error);
     }
+  };
+
   return (
-    <div className='register-container'>
-        <form onSubmit={registerUser}>
-            <label> Name </label>
-            <input type='text' placeholder='Enter your name' value={data.name} onChange={(e) => setData({...data, name: e.target.value})} />
-            <label> Email </label>
-            <input type='email' placeholder='Enter your email' value={data.email} onChange={(e) => setData({...data, email: e.target.value})}/>
-            <label> Name </label>
-            <input type='password' placeholder='Password' value={data.password} onChange={(e) => setData({...data, password: e.target.value})}/>
-            <button type='submit'>Submit</button>
-        </form>
-      
+    <div>
+      <h1>Register</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Username:
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Email:
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Verify Password:
+          <input type="password" value={passwordVerify} onChange={(e) => setPasswordVerify(e.target.value)} />
+        </label>
+        <br />
+        <button type="submit">Register</button>
+      </form>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
     </div>
   );
-}
+};
+
+export default Register;

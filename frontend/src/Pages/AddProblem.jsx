@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../CSS/addProblem.css'
+import '../CSS/addProblem.css';
 
 const AddProblem = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         difficulty: '',
-        input: '',
-        output: '',
-        testcases: ''
+        sampleInput: '',
+        sampleOutput: '',
+        testCases: [],
     });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
-            [name]: value
+            [name]: value,
         });
     };
 
@@ -32,8 +32,24 @@ const AddProblem = () => {
         }
     };
 
+    const handleTestCaseChange = (index, field, value) => {
+        const updatedTestCases = [...formData.testCases];
+        updatedTestCases[index][field] = value;
+        setFormData({
+            ...formData,
+            testCases: updatedTestCases,
+        });
+    };
+
+    const handleAddTestCase = () => {
+        setFormData({
+            ...formData,
+            testCases: [...formData.testCases, { input: '', expectedOutput: '' }],
+        });
+    };
+
     return (
-        <div className='add-problem-container'>
+        <div className="add-problem-container">
             <h2>Add New Problem</h2>
             <form onSubmit={handleSubmit}>
                 <label>Title:</label>
@@ -50,18 +66,36 @@ const AddProblem = () => {
                     <option value="hard">Hard</option>
                 </select>
 
-                <label>Input:</label>
-                <textarea name="input" value={formData.input} onChange={handleInputChange}></textarea>
+                <label>Sample Input:</label>
+                <textarea name="sampleInput" value={formData.sampleInput} onChange={handleInputChange}></textarea>
 
-                <label>Output:</label>
-                <textarea name="output" value={formData.output} onChange={handleInputChange}></textarea>
+                <label>Sample Output:</label>
+                <textarea name="sampleOutput" value={formData.sampleOutput} onChange={handleInputChange}></textarea>
+
+                <div className="test-cases">
+                    {formData.testCases.map((testCase, index) => (
+                        <div key={index} className="test-case">
+                            <input
+                                type="text"
+                                value={testCase.input}
+                                onChange={(e) => handleTestCaseChange(index, 'input', e.target.value)}
+                                placeholder="Test Case Input"
+                            />
+                            <input
+                                type="text"
+                                value={testCase.expectedOutput}
+                                onChange={(e) => handleTestCaseChange(index, 'expectedOutput', e.target.value)}
+                                placeholder="Expected Output"
+                            />
+                        </div>
+                    ))}
+                    <button type="button" onClick={handleAddTestCase}>Add Test Case</button>
+                </div>
 
                 <button type="submit">Submit</button>
             </form>
         </div>
-
     );
 };
 
 export default AddProblem;
-
