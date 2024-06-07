@@ -3,47 +3,70 @@ const jwt = require("jsonwebtoken");
 const { User } = require('../database/Database');
 
 const loginController = async (req, res) => {
-    console.log('Request body:', req.body);
-    const { email, password } = req.body;
-
     try {
-        if (!(email && password))
-            return res.status(400).json({ error: 'Please enter all required fields.'});
-
-        const existingUser = await User.findOneUser({ email });
+        const { email, password } = req.body;
     
-        if (!existingUser)
-            return res.status(401).json({ error: "User doesn't exist" });
-
-        const passwordCorrect = await bcrypt.compare(
-            password,
-            existingUser.password
-        );
-        if (!passwordCorrect)
-            return res.status(401).json({ error: `Wrong password.` });
-        
-        const token = jwt.sign(
-            {
-                user: existingUser._id,
-            },
-            process.env.SECRET_KEY
-        );
-
-        res.cookie("token", token, {
-            httpOnly: true,
-        }).status(200).json({ message: "Logged In" });
-        
-        } catch (err) {
-            console.error('Error:', err);
-            res.status(500).json({ error: "server error" });
-    }
+        if (!(email && password)) {
+          return res.status(404).json({
+            success: false,
+            message: "All the Information are required to get login",
+          });
+        }
+    
+        const existsUser = await User.findOneUser({ email });
+        if (!existsUser) {
+          return res.status(404).json({
+            success: false,
+            message: "User doesn't get Registered",
+          });
+        }
+    
+        const enteredPass = await bcrypt.compare(password, existsUser.password);
+        if (!enteredPass) {
+          return res
+            .status(404)
+            .json({ success: false, message: "Invalid login credentials" });
+        }
+    
+        const token = jwt.sign({ id: existsUser._id }, process.env.SECRET_KEY, {
+          expiresIn: "1h",
+        });
+    
+        existsUser.token = token;
+        existsUser.password = undefined;
+        // console.log(token);
+        const options = {
+          expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
+          withCredentials: true,
+          httpOnly: true,
+        };
+    
+        res.status(201).cookie("token", token, options).json({
+          message: "Successfully Logged in!!",
+          success: true,
+          token,
+        });
+      } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+      }
 
 }
 
 const registerController = async (req, res) => {
+    const { name, username, email, password } = req.body;
     try {
-        const { name, username, email, password } = req.body;
+        
 
+        if(!(name && username && email && password)) {
+            return re.status(404).json({success: flase, message: 'please enter all details'})
+        }
+
+        const user = await User.findOneUser({email});
+        
+        if(user){
+            return res.status(404).json({success: false, message: "User already exists"});
+        }
+        
         // hash the password
         const passwordHash = await bcrypt.hash(password, 10);
 
@@ -55,18 +78,27 @@ const registerController = async (req, res) => {
             {
                 user: savedUser._id,
             },
-            process.env.SECRET_KEY
+            process.env.SECRET_KEY, {
+                expiresIn: "1h",
+            }
         );
 
-        // send the token in a HTTP-only cookie
-        res.cookie("token", token, {
+        savedUser.token = token;
+        savedUser.password = undefined;
+
+        const options = {
+            expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
             httpOnly: true,
-            // secure: true,
-            // sameSite: "none",
-        }).status(200).json({ msg: "Registered" });
+        }
+
+        res.status(200).cookie("token", token, options).json({
+            message: "Successfully Registered!!",
+            token,
+            savedUser
+          });
     } catch (err) {
         
-        res.status(500).json({ error: err });
+        res.status(400).json({ success: false, message: err.message });
     }
 }
 
@@ -74,8 +106,7 @@ const logoutController = (req, res) => {
     return res.cookie("token", "", {
         httpOnly: true,
         expires: new Date(0),
-        // secure: true,
-        // sameSite: "none",
+        
     }).status(200).json({ msg: "Logged Out" });
 }
 
@@ -84,9 +115,9 @@ const loggedInController = async (req, res) => {
         if (!req.cookies || !req.cookies.token) return res.json(false);
 
         const token = req.cookies.token;
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
+        const verified = jwt.verify(token, process.env.SECRET_KEY);
 
-        const user = await User.getUserById(verified.user);
+        const user = await User.getUserById(verified.id);
 
         res.status(200).json({
             status: true,

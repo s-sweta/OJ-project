@@ -1,13 +1,21 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useUser } from '../../context/userContext';
 import '../CSS/problem.css'
 
+
 const ProblemPage = () => {
+    const [user, setUser] = useState([]);
+  useEffect(() => {
+    axios.get('http://localhost:5000/loggedIn')
+    .then(response => {
+      setUser(response.data)
+    })
+    .catch(error => {
+      console.error('Error getting user:', error)
+    });
+  }, [])
     const { id } = useParams();
-    const { user } = useUser();
-    const userId = user ? user.userId : null;
 
     const [code, setCode] = useState('');
     const [language, setLanguage] = useState('cpp');
@@ -45,13 +53,13 @@ const ProblemPage = () => {
         setInput(e.target.value);
     };
 
-    const handleSubmit = async (e) => {
+    const handleRun = async (e) => {
         e.preventDefault();
         try {
           const response = await fetch('http://localhost:5000/run', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ language, code, input }), // Include input in the request body
+            body: JSON.stringify({ language, code, input }), 
           });
           const data = await response.json();
           setOutput(data.output);
@@ -61,16 +69,24 @@ const ProblemPage = () => {
         }
       };
 
-      const handleCodeSubmit = async () => {
+      const handleCodeSubmit = async (e) => {
+        e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:5000/submit/${id}`, { language, code });
-            console.log(response.data);
-            // Handle success
+            
+            const response = await axios.post(`http://localhost:5000/submit/${id}`, 
+                {
+                    language, code
+                },
+                {withCredentials: true}
+            );
+            const data = await response.json();
+            setOutput(data.output);
+            setError('');
         } catch (error) {
-            setError(error.response.data.error);
+            setError(error.message);
         }
     };
-
+    
     return (
         <div className="problem-page">
             <div className="problem-details">
@@ -79,7 +95,7 @@ const ProblemPage = () => {
                 <p><b>Difficulty: </b><br/>{difficulty}</p>
             </div>
             <div className="code-editor">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleRun}>
                     <label>
                         Language:
                         <select value={language} onChange={(e) => setLanguage(e.target.value)}>

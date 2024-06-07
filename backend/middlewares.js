@@ -1,16 +1,8 @@
 const jwt = require("jsonwebtoken");
-const bcrypt = require('bcryptjs');
+require("dotenv").config();
 const { User } = require('./database/Database');
 
-            
 
-
-
-/**
-* @param {Object} req
-* @param {Object} req.body
-* @param {String} req.body.username
-*/
 const registerValidator = async (req, res, next) => {
 
     let { name, username, email, password, passwordVerify } = req.body;
@@ -73,17 +65,33 @@ const registerValidator = async (req, res, next) => {
 const authValidator = (req, res, next) => {
     try {
         const token = req.cookies.token;
-        if (!token) return res.status(401).json({ error: "Unauthorized" });
-
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = verified.user;
-        req.username = verified.username;
-
-        next();
-    } catch (err) {
-       
-        res.status(401).json({ error: "Unauthorized" });
-    }
+        // console.log(token);
+        if (!token) {
+          console.log("token not found 1");
+          return res.status(404).json({
+            success: false,
+            message: "User authentication failed",
+          });
+        }
+        jwt.verify(token, process.env.SECRET_KEY, async (error, data) => {
+          if (error) {
+            return res
+              .status(404)
+              .json({ success: false, message: "User authentication failed" });
+          } else {
+            const user = await User.getUserById(data.id);
+            if (user) {
+              // console.log(user.firstname);
+              return res.status(200).json({ success: true, user: user});
+            } else
+              return res
+                .status(404)
+                .json({ success: false, message: "User authentication failed" });
+          }
+        });
+      } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+      }
 }
 
 const authProvider = (req, res, next) => {

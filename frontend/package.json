@@ -10,12 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codemirror/autocomplete": "^6.16.2",
+    "@uiw/react-codemirror": "^4.22.2",
     "axios": "^1.7.2",
+    "codemirror": "^5.65.16",
     "react": "^18.2.0",
+    "react-codemirror2": "^8.0.0",
     "react-cookie": "^7.1.4",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "tern": "^0.24.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

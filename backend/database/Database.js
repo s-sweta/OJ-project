@@ -17,32 +17,9 @@ const incrNoOfSuccess = async quesId => {
 }
 
 
-
-// Query
-const createNewQuery = async params => {
-    return await Query.create(params);
-}
-const getQueryById = async queryId => {
-    return await Query.findById(`${queryId}`);
-}
-const getAllQueriesReverseSorted = async () => {
-    return await Query.find({ type: { $ne: 'exec' } }).sort({ _id: -1 });
-}
-const deleteQueryById = async queryId => {
-    return await Query.findByIdAndDelete(queryId);
-}
-const getQueryByIdAndUpdate = async (queryId, options) => {
-    return await Query.findOneAndUpdate(
-        { _id: queryId },
-        options,
-        { new: true }
-    );
-}
-
-
 // User
-const createNewUser = async ({ name, username, email, passwordHash }) => {
-    return await User.create({ name, username, email, passwordHash });
+const createNewUser = async ({ name, username, email, password }) => {
+    return await User.create({ name, username, email, password });
 }
 const getUserById = async userId => {
     return await User.findById(userId);
@@ -66,50 +43,8 @@ const incrTotalSubmInUser = async (userId) => {
 }
 
 
-// Note
-const createNewNote = async params => {
-    return await Note.create(params);
-}
-const getNoteById = async noteId => {
-    return await Note.findById(noteId);
-}
-const getNoteByFilter = async filter => {
-    return await Note.find(filter);
-}
-const deleteNoteById = async noteId => {
-    return await Note.deleteOne({ _id: noteId });
-}
-
-
-// Code
-const createNewCode = async params => {
-    return await Code.create(params);
-}
-const getCodeById = async codeId => {
-    return await Code.findById(codeId);
-}
-const deleteCodeById = async codeId => {
-    return await Code.deleteOne({ _id: codeId });
-}
-
-
-// Authorization
-const isAdmin = username => {
-    return (username === 'aman');
-}
-const isGuest = username => {
-    return (!username || (username === 'guest'));
-}
-
-
-// Logs
-const createNewLog = async params => {
-    return await Logs.create(params);
-}
-
-
 module.exports = {
     Problem: { getProblemList, getProblemById, incrNoOfSubm, incrNoOfSuccess },
     User: { createNewUser, getUserById, findOneUser, addSolvedProblemToUser, incrTotalSubmInUser },
-    Authorization: { isAdmin, isGuest },
+   
 };

@@ -14,21 +14,20 @@ nav {
   }
   
   nav a:hover {
-    color: lightgray;
+    background-color: #959b9f;
   }
   
   nav button {
-    background-color: #4CAF50;
+    background-color: #333;
     color: white;
     border: none;
-    padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
   }
   
   nav button:hover {
-    background-color: #45a049;
+    background-color: #959b9f;
   }
   
   nav span {

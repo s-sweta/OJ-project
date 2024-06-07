@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
     registerValidator,
-    authProvider
+    authValidator,
 } = require('../middlewares');
 const {
     loginController,
@@ -14,9 +14,10 @@ const {
 
 
 router.post('/login', loginController);
-router.post('/register', registerValidator, registerController);
+router.post('/register',  registerController);
 router.get('/logout', logoutController);
 router.get('/loggedIn', loggedInController);
+router.post('/', authValidator);
 router.put('/changePassword', changePasswordController);
 
 module.exports = router;

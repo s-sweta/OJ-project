@@ -1,16 +1,24 @@
 const Submission = require('../models/Submission');
+const jwt = require("jsonwebtoken");
 const Problem = require('../models/Problem');
-const User = require('../models/User');
+// const User = require('../models/User');
+const { User } = require('../database/Database');
 const { generateFile, generateInputFile, executeCode, runCode} = require('./compilerController');
 
 
 const submitCode = async (req, res) => {
-    const { language = 'cpp', code } = req.body;
-    const { problemId } = req.params;
-    const submissionDateTime = new Date(); // Current date and time
-
     try {
-        // Fetch problem with test cases
+        if (!req.cookies) return res.json('cannot find cookie');
+        if (!req.cookies.token) return res.json('cannot find token');
+        const token = req.cookies.token;
+        const verified = jwt.verify(token, process.env.SECRET_KEY);
+
+        const user = await User.getUserById(verified.id);
+
+        
+        const { language = 'cpp', code } = req.body;
+        const { problemId } = req.params;
+        const submissionDateTime = new Date();
         const problem = await Problem.findById(problemId).populate('testCases');
         if (!problem) {
             return res.status(404).json({ success: false, error: "Problem not found." });
@@ -38,7 +46,7 @@ const submitCode = async (req, res) => {
 
         // Save submission to database
         const submission = new Submission({
-            
+            userId: verified.id,
             problemId,
             code,
             verdict: overallVerdict,

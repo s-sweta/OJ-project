@@ -1,47 +1,149 @@
-
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  
-  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const verifyCookie = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000",
+          {},
+          { withCredentials: true }
+        );
+        if (response.data.success) {
+          navigate("/dashboard");
+        }
+      } catch (error) {
+        console.log(error.response.data.message);
+        navigate("/login");
+      }
+    };
+    verifyCookie();
+  },[]);
+  const [inputValue, setInputValue] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = inputValue;
+  const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState("");
+  const validateForm = (data) => {
+    const errors = {};
+    if (!data.email.trim()) {
+      errors.email = "Email is required";
+    }
+    if (!data.password.trim()) {
+      errors.password = "Password is required";
+    }
+    return errors;
+  };
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/login', {
-        email,
-        password
+    const newErrors = validateForm(inputValue);
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length === 0) {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/login",
+          {
+            ...inputValue,
+          },
+          { withCredentials: true }
+        );
+        const { success, message } = response.data;
+        if (success) {
+          setInputValue({
+            email: "",
+            password: "",
+          });
+          navigate("/dashboard");
+          // console.log(response);
+        } else {
+          // console.log(success);
+          setInputValue({
+            email: "",
+            password: "",
+          });
+          setSubmitError("login error");
+          console.log("login error");
+          // console.log(message);
+        }
+      } catch (error) {
+        setInputValue({
+          email: "",
+          password: "",
+        });
+        setSubmitError(error.response.data.message);
+        console.log(error.response.data.message);
+      }
+    } else {
+      setInputValue({
+        email: "",
+        password: "",
       });
-      const token = response.data.token;
-      localStorage.setItem('token', token);
-      window.location.href = '/';
-    } catch (error) {
-      setError(error.response.data.error);
+      setSubmitError("Login submission failed");
+      console.log("Login submission failed");
     }
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-      <label>
-          email:
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </label>
-        <br />
-        
-        <label>
-          Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </label>
-        <br />
-        <button type="submit">Login</button>
-      </form>
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-    </div>
+    <>
+      <div className="logForm-container">
+        <h2 className="logForm-title">Login Account</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="logForm-group">
+            <label className="logForm-label" htmlFor="email">
+              Email:
+            </label>
+            <input
+              className="logForm-input"
+              type="email"
+              name="email"
+              value={email}
+              placeholder="Enter your Email"
+              onChange={handleOnChange}
+            />
+            {errors.email && (
+              <span className="logError-message">{errors.email}</span>
+            )}
+          </div>
+          <div className="logForm-group">
+            <label className="logForm-label" htmlFor="password">
+              Password:
+            </label>
+            <input
+              className="logForm-input"
+              type="password"
+              name="password"
+              value={password}
+              placeholder="Enter your password"
+              onChange={handleOnChange}
+            />
+            {errors.password && (
+              <span className="logError-message">{errors.password}</span>
+            )}
+          </div>
+          <button className="logSubmit-button" type="submit">
+            Submit
+          </button>
+          <span>
+            &nbsp; Don't have an Account <Link to={"/signup"}>SignUp</Link>
+          </span>
+          {submitError && <span className="logError-message">{submitError}</span>}
+        </form>
+      </div>
+    </>
   );
 };
 

@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Login from './pages/Login'
-import Register from './pages/Register'
+import Signup from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import ProblemList from './pages/ProblemList'
 import EditProblem from './pages/UpdateProblem'
@@ -25,7 +25,8 @@ function App() {
       <Routes>
         <Route path ='/' element={<Home/>} />
         <Route path ='/login' element={<Login/>} />
-        <Route path ='/register' element={<Register/>} />
+        <Route path ='/loggedIn' element={<Dashboard/>} />
+        <Route path ='/register' element={<Signup/>} />
         <Route path ='/dashboard' element={<Dashboard/>} />
         <Route path ='/problems' element={<ProblemList/>} />
         <Route path="/problems/:id" element={<EditProblem />} />
