@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import '../CSS/addProblem.css';
 
 const AddProblem = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         difficulty: '',
         sampleInput: '',
         sampleOutput: '',
+        constraints: '',
+        inputFormat: '',
+        outputFormat: '',
         testCases: [],
     });
 
@@ -25,6 +30,7 @@ const AddProblem = () => {
         try {
             const response = await axios.post('http://localhost:5000/problems', formData);
             console.log('Problem successfully added:', response.data);
+            navigate("/problems");
             // Display success message or redirect to problem list
         } catch (error) {
             console.error('Error adding problem:', error);
@@ -53,12 +59,12 @@ const AddProblem = () => {
             <h2>Add New Problem</h2>
             <form onSubmit={handleSubmit}>
                 <label>Title:</label>
-                <input type="text" name="title" value={formData.title} onChange={handleInputChange} />
+                <input className='problem-title' type="text" name="title" value={formData.title} onChange={handleInputChange} />
 
                 <label>Description:</label>
-                <textarea name="description" value={formData.description} onChange={handleInputChange}></textarea>
+                <textarea className='problem-description' name="description" value={formData.description} onChange={handleInputChange}></textarea>
 
-                <label>Difficulty:</label>
+                <label className='problem-difficulty'>Difficulty:</label>
                 <select name="difficulty" value={formData.difficulty} onChange={handleInputChange}>
                     <option value="">Select difficulty</option>
                     <option value="easy">Easy</option>
@@ -66,27 +72,34 @@ const AddProblem = () => {
                     <option value="hard">Hard</option>
                 </select>
 
-                <label>Sample Input:</label>
+                <label className='problem-sample-input'>Sample Input:</label>
                 <textarea name="sampleInput" value={formData.sampleInput} onChange={handleInputChange}></textarea>
 
-                <label>Sample Output:</label>
+                <label className='problem-sample-output'>Sample Output:</label>
                 <textarea name="sampleOutput" value={formData.sampleOutput} onChange={handleInputChange}></textarea>
+
+                <label className='problem-constraints'>Constraints:</label>
+                <textarea name="constraints" value={formData.constraints} onChange={handleInputChange}></textarea>
+
+                <label className='problem-input-format'>Input Format:</label>
+                <textarea name="inputFormat" value={formData.inputFormat} onChange={handleInputChange}></textarea>
+
+                <label className='problem-output-format'>Output Format:</label>
+                <textarea name="outputFormat" value={formData.outputFormat} onChange={handleInputChange}></textarea>
 
                 <div className="test-cases">
                     {formData.testCases.map((testCase, index) => (
                         <div key={index} className="test-case">
-                            <input
-                                type="text"
+                            <label>Test Case Input:</label>
+                            <textarea
                                 value={testCase.input}
                                 onChange={(e) => handleTestCaseChange(index, 'input', e.target.value)}
-                                placeholder="Test Case Input"
-                            />
-                            <input
-                                type="text"
+                            ></textarea>
+                            <label>Expected Output:</label>
+                            <textarea
                                 value={testCase.expectedOutput}
                                 onChange={(e) => handleTestCaseChange(index, 'expectedOutput', e.target.value)}
-                                placeholder="Expected Output"
-                            />
+                            ></textarea>
                         </div>
                     ))}
                     <button type="button" onClick={handleAddTestCase}>Add Test Case</button>

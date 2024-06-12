@@ -14,13 +14,36 @@ const getAllProblems = async (req, res) => {
 // Controller function to handle creating a new problem
 const createProblem = async (req, res) => {
     try {
-        const { title, description, difficulty, sampleInput, sampleOutput, testCases } = req.body;
-        const newProblem = await Problem.create({ title, description, difficulty, sampleInput, sampleOutput, testCases });
+        const {
+            title,
+            description,
+            difficulty,
+            sampleInput,
+            sampleOutput,
+            constraints,
+            inputFormat,
+            outputFormat,
+            testCases
+        } = req.body;
+
+        const newProblem = await Problem.create({
+            title,
+            description,
+            difficulty,
+            sampleInput,
+            sampleOutput,
+            constraints,
+            inputFormat,
+            outputFormat,
+            testCases
+        });
+
         res.status(201).json(newProblem);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 
 // Controller function to handle updating an existing problem

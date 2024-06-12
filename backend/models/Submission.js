@@ -5,12 +5,16 @@ const Problem = require('./Problem');
 const submissionSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: User,
         required: true
     },
     problemId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Problem',
+        ref: Problem,
+        required: true
+    },
+    language: {
+        type: String,
         required: true
     },
     code: {
@@ -19,12 +23,12 @@ const submissionSchema = new mongoose.Schema({
     },
     verdict: {
         type: String,
-        enum: ['Accepted', 'Wrong Answer', 'Time Limit Exceeded', 'Runtime Error'],
+        enum: ['Accepted', 'Wrong Answer', 'Time Limit Exceeded', 'Runtime Error', 'Compilation Error'],
         required: true
     },
-    language: {
-        type: String,
-        required: true
+    isSolved: {
+        type: Boolean,
+        default: false
     },
     submissionDateTime: {
         type: Date,
@@ -35,4 +39,5 @@ const submissionSchema = new mongoose.Schema({
 const Submission = mongoose.model('Submission', submissionSchema);
 
 module.exports = Submission;
+
 

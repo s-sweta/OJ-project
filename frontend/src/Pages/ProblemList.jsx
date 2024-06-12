@@ -17,15 +17,14 @@ const ProblemList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        // Ask the user to confirm the deletion
         const confirmDelete = window.confirm('Are you sure you want to delete this problem?');
         if (!confirmDelete) {
-            return; // If user cancels, do nothing
+            return; 
         }
 
         try {
             await axios.delete(`http://localhost:5000/problems/${id}`);
-            // Update state by removing the deleted problem
+            
             setProblems(problems.filter(problem => problem._id !== id));
             console.log('Problem deleted successfully');
         } catch (error) {
@@ -39,11 +38,16 @@ const ProblemList = () => {
             <ul className='problem'>
                 {problems.map(problem => (
                     <li key={problem._id}>
-                        <h2>{problem.title}</h2>
+                        <div className='problem-details'>
+                            <h2>{problem.title}</h2>
+                            <span className={`difficulty ${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</span>
+                        </div>
+                        <div className='solve-edit-problem'>
+                            <Link to={`/problem/${problem._id}`}>Solve</Link>
+                            <Link to={`/problems/${problem._id}`}>Edit</Link>
+                            <button onClick={() => handleDelete(problem._id)}>Delete</button>
+                        </div>
                         
-                        <Link to={`/problem/${problem._id}`}>Solve</Link>
-                        <Link to={`/problems/${problem._id}`}>Edit</Link>
-                        <button onClick={() => handleDelete(problem._id)}>Delete</button>
                     </li>
                 ))}
             </ul>
@@ -52,5 +56,6 @@ const ProblemList = () => {
 };
 
 export default ProblemList;
+
 
 

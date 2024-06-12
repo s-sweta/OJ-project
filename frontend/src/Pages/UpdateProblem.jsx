@@ -11,6 +11,11 @@ const UpdateProblem = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [difficulty, setDifficulty] = useState("");
+  const [sampleInput, setSampleInput] = useState("");
+  const [sampleOutput, setSampleOutput] = useState("");
+  const [constraints, setConstraints] = useState("");
+  const [inputFormat, setInputFormat] = useState("");
+  const [outputFormat, setOutputFormat] = useState("");
   
   // State for test cases
   const [testCases, setTestCases] = useState([{ input: '', expectedOutput: '' }]);
@@ -22,11 +27,16 @@ const UpdateProblem = () => {
         const response = await axios.get(`http://localhost:5000/problems/${id}`, {
           withCredentials: true,
         });
-        const { title, description, difficulty, testCases } = response.data;
+        const { title, description, difficulty, sampleInput, sampleOutput, constraints, inputFormat, outputFormat, testCases } = response.data;
         
         setTitle(title);
         setDescription(description);
         setDifficulty(difficulty);
+        setSampleInput(sampleInput);
+        setSampleOutput(sampleOutput);
+        setConstraints(constraints);
+        setInputFormat(inputFormat);
+        setOutputFormat(outputFormat);
         setTestCases(testCases || [{ input: '', expectedOutput: '' }]); // Initialize test cases, or set empty array if not provided
       } catch (error) {
         console.error("Error fetching problem:", error);
@@ -38,7 +48,7 @@ const UpdateProblem = () => {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedProblem = { title, description, difficulty, testCases };
+    const updatedProblem = { title, description, difficulty, sampleInput, sampleOutput, constraints, inputFormat, outputFormat, testCases };
     try {
       // Send PUT request to update problem
       await axios.put(`http://localhost:5000/problems/${id}`, updatedProblem, {
@@ -67,7 +77,7 @@ const UpdateProblem = () => {
     <div className="update-form-container">
       <h2>Update Problem</h2>
       <form onSubmit={handleSubmit}>
-      <div className="form-group">
+        <div className="form-group">
           <label className="form-label" htmlFor="title">
             Title:
           </label>
@@ -108,27 +118,84 @@ const UpdateProblem = () => {
             <option value="hard">Hard</option>
           </select>
         </div>
-        
-       
+        <div className="form-group">
+          <label className="form-label" htmlFor="sampleInput">
+            Sample Input:
+          </label>
+          <textarea
+            className="form-input"
+            name="sampleInput"
+            value={sampleInput}
+            placeholder="Enter sample input"
+            onChange={(e) => setSampleInput(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor="sampleOutput">
+            Sample Output:
+          </label>
+          <textarea
+            className="form-input"
+            name="sampleOutput"
+            value={sampleOutput}
+            placeholder="Enter sample output"
+            onChange={(e) => setSampleOutput(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor="constraints">
+            Constraints:
+          </label>
+          <textarea
+            className="form-input"
+            name="constraints"
+            value={constraints}
+            placeholder="Enter constraints"
+            onChange={(e) => setConstraints(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor="inputFormat">
+            Input Format:
+          </label>
+          <textarea
+            className="form-input"
+            name="inputFormat"
+            value={inputFormat}
+            placeholder="Enter input format"
+            onChange={(e) => setInputFormat(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor="outputFormat">
+            Output Format:
+          </label>
+          <textarea
+            className="form-input"
+            name="outputFormat"
+            value={outputFormat}
+            placeholder="Enter output format"
+            onChange={(e) => setOutputFormat(e.target.value)}
+          />
+        </div>
         <div className="test-cases">
           {testCases.map((testCase, index) => (
             <div key={index} className="test-case">
-              <input
-                type="text"
+              <textarea
                 value={testCase.input}
                 onChange={(e) => handleTestCaseChange(index, 'input', e.target.value)}
                 placeholder="Test Case Input"
               />
-              <input
-                type="text"
+              <textarea
                 value={testCase.expectedOutput}
                 onChange={(e) => handleTestCaseChange(index, 'expectedOutput', e.target.value)}
                 placeholder="Expected Output"
               />
             </div>
           ))}
-          <button type="button" onClick={handleAddTestCase}>Add Test Case</button>
+          <button className='test-case-button' type="button" onClick={handleAddTestCase}>Add Test Case</button>
         </div>
+
         
         <button className="submit-button" type="submit">
           Submit
@@ -139,8 +206,3 @@ const UpdateProblem = () => {
 };
 
 export default UpdateProblem;
-
-
-
-
-

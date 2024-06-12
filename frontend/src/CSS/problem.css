@@ -1,2 +1,191 @@
+/* New color palette */
+:root {
+    --color-white: #FFFFFF;
+    --color-light-lavender: #F8F6FB;
+    --color-dark-blue: #3531A2;
+    --color-white-slightly-different: #FEFEFE;
+    --color-off-white: #FFFFFE;
+    --color-light-purple: #7977F4;
+    --color-light-gray: #F0F0F0;
+    --color-very-light-gray: #FDFDFD;
+    --color-light-purple-slightly-different: #7B79F6;
+    --color-medium-purple: #6965BA;
+    --color-very-light-gray-slightly-different: #FCFCFC;
+    --color-red: #D9534F;
+    --color-green: #5CB85C;
+    --color-light-blue: #D0D3F0;
+    --color-dark-gray: #343a40;
+    --color-yellow: #F0AD4E;
+  }
 
+  
+  
+  .problem-page {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+  }
+  
+  .problem-details {
+      flex: 1 1 40%;
+      margin-right: 20px;
+      padding: 20px;
+      background-color: var(--color-light-lavender); /* Using the new color variable */
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .problem-details h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+  }
+  
+  .problem-details p {
+      margin-bottom: 15px;
+  }
+  
+  .code-compiler {
+      flex: 1 1 55%;
+      display: flex;
+      flex-direction: column;
+  }
+  
+  .theme-language-selector {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1px;
+  }
+  
+  .theme-language-selector > * {
+      margin-right: 10px;
+  }
+  
+  .theme-language-selector input[type="range"] {
+      width: 100px;
+  }
+  
+  .editor {
+      position: relative;
+      background-color: var(--color-white); /* Using the new color variable */
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+  }
+  
+  .right-container {
+      flex: 1;
+  }
+  
+  
+  .editor .run-btn {
+      background-color: var(--color-dark-blue); /* Using the new color variable */
+      color: var(--color-white); /* Using the new color variable */
+      border: none;
+      padding: 10px 20px;
+      margin: 10px 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      align-self: flex-start;
+  }
+  
+  .editor .run-btn:hover {
+      background-color: var(--color-medium-purple); /* Using the new color variable */
+  }
+  
+  .input-output-container {
+      display: flex;
+      margin-top: 0px;
+  }
+  
+  .input-box, .output-box {
+      flex: 1;
+      margin-right: 10px;
+  }
+  
+  .input-box h4, .output-box h4 {
+      margin-bottom: 15px;
+  }
+  
+  .input-box textarea {
+      width: 100%;
+      height: 120px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid var(--color-very-light-gray); /* Using the new color variable */
+      resize: none;
+      background-color: var(--color-light-lavender);
+  }
+  
+  .output-box pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      background-color: var(--color-light-lavender); /* Using the new color variable */
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid var(--color-light-lavender); /* Using the new color variable */
+      min-height: 100px;
+  }
+  
+  .error-message {
+      color: red;
+      margin-top: 10px;
+  }
+  
+  .verdict-box {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid var(--color-dark-gray);
+      border-radius: 5px;
+      background-color: var(--color-very-light-gray); 
+  }
+
+  .verdict-box h4 {
+    font-weight: bolder;
+    color: var(--color-dark-blue);
+  }
+  
+  .verdict-box .accepted {
+    color: var(--color-off-white);
+    background-color: var(--color-green);
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+
+  .verdict-box pre  {
+    background-color: var(--color-red);
+    color: var(--color-off-white);
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+
+  @media (max-width: 768px) {
+      .problem-page {
+          flex-direction: column;
+      }
+  
+      .problem-details, .code-compiler {
+          flex: 1 1 100%;
+          margin-right: 0;
+          margin-bottom: 20px;
+      }
+  
+      .input-output-container {
+          flex-direction: column;
+      }
+  
+      .input-box, .output-box {
+          margin-right: 0;
+          margin-bottom: 20px;
+      }
+  }
   

@@ -1,47 +1,103 @@
+/* Container for the add problem form */
 .add-problem-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .add-problem-container h2 {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .add-problem-container form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .add-problem-container label {
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .add-problem-container input,
-  .add-problem-container textarea,
-  .add-problem-container select {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .add-problem-container button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .add-problem-container button:hover {
-    background-color: #0056b3;
-  }
-  
+  max-width: 800px; /* Maximum width of the container */
+  margin: 0 auto; /* Center the container */
+  padding: 20px; /* Padding for spacing inside the container */
+  background-color: #ffffff; /* White background color */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a floating effect */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Styling for the form heading */
+.add-problem-container h2 {
+  text-align: center; /* Center-align the heading */
+  margin-bottom: 20px; /* Space below the heading */
+  font-size: 1.5em; /* Larger font size */
+  color: #333; /* Darker text color */
+}
+
+/* General styling for all labels */
+.add-problem-container form label {
+  display: block; /* Each label on its own line */
+  margin: 10px 0 5px; /* Vertical spacing around the labels */
+  font-weight: bold; /* Bold text for labels */
+  color: #555; /* Grey color for labels */
+}
+
+/* General styling for all input fields and textareas */
+.add-problem-container form input[type="text"],
+.add-problem-container form textarea,
+.add-problem-container form select {
+  width: 100%; /* Full width of the container */
+  padding: 10px; /* Padding inside the input fields */
+  margin-bottom: 15px; /* Space below each input field */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 4px; /* Slightly rounded corners */
+  font-size: 1em; /* Standard font size */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Specific styling for the textareas to handle multi-line inputs */
+.add-problem-container form textarea {
+  resize: vertical; /* Allow vertical resizing */
+  min-height: 60px; /* Minimum height for textareas */
+}
+
+/* Specific styling for the test cases section */
+.test-cases {
+  margin-top: 20px; /* Space above the test cases section */
+}
+
+.test-cases .test-case {
+  margin-bottom: 15px; /* Space below each test case */
+  padding: 10px; /* Padding inside the test case box */
+  border: 1px solid #ddd; /* Light border to define test case area */
+  border-radius: 4px; /* Rounded corners for the test case area */
+  background-color: #f9f9f9; /* Light grey background for test cases */
+}
+
+/* Test case input and output styling */
+.test-cases .test-case textarea {
+  width: 100%; /* Full width within the test case box */
+  padding: 10px; /* Padding for spacing inside the textareas */
+  margin-bottom: 10px; /* Space below each textarea */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 4px; /* Slightly rounded corners */
+  min-height: 40px; /* Minimum height for test case textareas */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Styling for the button to add test cases */
+.test-cases button {
+  display: block; /* Button will be displayed as a block element */
+  background-color: #007bff; /* Blue background color */
+  color: #fff; /* White text color */
+  border: none; /* Remove default border */
+  padding: 10px 15px; /* Padding for spacing inside the button */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  margin: 0 auto; /* Center the button horizontally */
+  margin-top: 10px; /* Space above the button */
+}
+
+.test-cases button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Styling for the submit button */
+.add-problem-container form button[type="submit"] {
+  width: 100%; /* Full width of the container */
+  background-color: #28a745; /* Green background color */
+  color: #fff; /* White text color */
+  border: none; /* Remove default border */
+  padding: 15px; /* Padding for spacing inside the button */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 1em; /* Standard font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.add-problem-container form button[type="submit"]:hover {
+  background-color: #218838; /* Darker green on hover */
+}

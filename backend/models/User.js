@@ -19,9 +19,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    solvedQuestions: [{
-        type: String
-    }],
     totalSubmissions: {
         type: Number,
         default: 0

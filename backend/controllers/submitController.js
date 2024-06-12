@@ -1,80 +1,144 @@
+const mongoose = require('mongoose');
 const Submission = require('../models/Submission');
 const jwt = require("jsonwebtoken");
 const Problem = require('../models/Problem');
-// const User = require('../models/User');
-const { User } = require('../database/Database');
-const { generateFile, generateInputFile, executeCode, runCode} = require('./compilerController');
+const User = require('../models/User')
 
-
-const submitCode = async (req, res) => {
+const submitSolution = async (req, res) => {
     try {
-        if (!req.cookies) return res.json('cannot find cookie');
-        if (!req.cookies.token) return res.json('cannot find token');
-        const token = req.cookies.token;
-        const verified = jwt.verify(token, process.env.SECRET_KEY);
+        const { problemId, userId } = req.params;
+        const { language, code, verdict, isSolved } = req.body;
 
-        const user = await User.getUserById(verified.id);
-
-        
-        const { language = 'cpp', code } = req.body;
-        const { problemId } = req.params;
-        const submissionDateTime = new Date();
-        const problem = await Problem.findById(problemId).populate('testCases');
-        if (!problem) {
-            return res.status(404).json({ success: false, error: "Problem not found." });
-        }
-        
-        const testCases = problem.testCases;
-
-        // Execute code for each test case
-        const results = [];
-        for(const testCase of testCases) {
-            const { input: testCaseInput, expectedOutput } = testCase;
-            const output = await runCode(language, code, testCaseInput);
-
-            const testCaseResult = {
-                input: testCaseInput,
-                expectedOutput,
-                output,
-                verdict: (output === expectedOutput) ? 'Accepted' : 'Wrong Answer'
-            };
-            results.push(testCaseResult);
-        }
-
-        // Calculate overall verdict
-        const overallVerdict = results.every(result => result.verdict === 'Accepted') ? 'Accepted' : 'Wrong Answer';
-
-        // Save submission to database
         const submission = new Submission({
-            userId: verified.id,
+            userId,
             problemId,
-            code,
-            verdict: overallVerdict,
             language,
-            submissionDateTime,
-            results
+            code,
+            verdict,
+            isSolved,
+            submissionDateTime: new Date(),
         });
+
         await submission.save();
 
-        res.json({ success: true, message: "Code submitted successfully.", results });
+        await User.findByIdAndUpdate(
+            userId,
+            { $inc: { totalSubmissions: 1 } },
+            { new: true }
+        );
+
+        await Problem.findByIdAndUpdate(problemId, { $inc: { totalSubmissions: 1 } });
+
+        
+
+        res.status(200).json({ success: true, message: 'Code submitted successfully' });
     } catch (error) {
         console.error("Error submitting code:", error);
-        res.status(500).json({ success: false, message: error});
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
 
-// Function to get all submissions for a specific user
 const getAllMySubmissions = async (req, res) => {
     const { userId } = req.params;
 
+    // Validate userId (Optional but recommended)
+    if (!userId ) {
+        return res.status(400).json({ success: false, error: 'Invalid user ID' });
+    }
+
     try {
-        const submissions = await Submission.find({ userId }).populate('problemId');
+        // Find submissions by userId and populate the problemId with the title and other necessary fields
+        const submissions = await Submission.find({ userId })
+            .populate('problemId', 'title') // Populating problemId with its title
+            .exec();
+
+        if (!submissions.length) {
+            return res.status(404).json({ success: false, error: 'No submissions found for this user' });
+        }
+
+        // Return the submissions in the response
         res.json({ success: true, submissions });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        // Log the error for server-side debugging
+        console.error('Error fetching submissions:', error);
+
+        // Send error response to the client
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 };
+
+
+
+const getSolvedProblems = async (req, res) => {
+    const { userId } = req.params;
+
+    // Validate userId
+    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ success: false, error: 'Invalid user ID' });
+    }
+
+    try {
+        // Aggregation pipeline to get the latest "Accepted" submissions per problem
+        const solvedProblems = await Submission.aggregate([
+            // Match submissions with "Accepted" verdict for the given userId
+            { $match: { userId: new mongoose.Types.ObjectId(userId), verdict: 'Accepted' } },
+            
+            // Sort by problemId and submissionDateTime to get the latest one
+            { $sort: { problemId: 1, submissionDateTime: -1 } },
+            
+            // Group by problemId to get the latest submission for each problem
+            { $group: { 
+                _id: "$problemId", 
+                latestSubmission: { $first: "$$ROOT" }
+            }},
+            
+            // Replace _id with the original problemId details for clarity
+            { $lookup: {
+                from: 'problems', // Ensure this matches the collection name in MongoDB
+                localField: '_id',
+                foreignField: '_id',
+                as: 'problemDetails'
+            }},
+            
+            // Unwind the problemDetails array to include it as a single object
+            { $unwind: "$problemDetails" },
+            
+            // Project only the required fields
+            { $project: {
+                _id: 0, // Exclude the default _id field
+                problemId: "$_id",
+                title: "$problemDetails.title",
+                difficulty: "$problemDetails.difficulty",
+                latestSubmission: {
+                    _id: "$latestSubmission._id",
+                    language: "$latestSubmission.language",
+                    code: "$latestSubmission.code",
+                    submissionDateTime: "$latestSubmission.submissionDateTime",
+                    isSolved: "$latestSubmission.isSolved"
+                }
+            }}
+        ]);
+
+        // Check if we found any solved problems
+        if (!solvedProblems.length) {
+            return res.status(404).json({ success: false, error: 'No solved problems found for this user' });
+        }
+
+        // Return the solved problems in the response
+        res.json({ success: true, solvedProblems });
+    } catch (error) {
+        // Log the error for debugging purposes
+        console.error('Error fetching solved problems:', error.message, error.stack);
+
+        // Send error response to the client
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+};
+
+
+
+
 
 // Function to get all submissions for a specific problem
 const getAllSubmissionsForProblem = async (req, res) => {
@@ -93,4 +157,4 @@ const getAllSubmissionsForProblem = async (req, res) => {
     }
 };
 
-module.exports = { submitCode, getAllMySubmissions, getAllSubmissionsForProblem };
+module.exports = { submitSolution, getAllMySubmissions, getSolvedProblems, getAllSubmissionsForProblem  };

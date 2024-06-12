@@ -1,41 +1,97 @@
-.login-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .login-container form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .login-container label {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .login-container input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .login-container button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .login-container button:hover {
-    background-color: #0056b3;
-  }
-  
+:root {
+  --color-white: #FFFFFF;
+  --color-light-lavender: #F8F6FB;
+  --color-dark-blue: #3531A2;
+  --color-white-slightly-different: #FEFEFE;
+  --color-off-white: #FFFFFE;
+  --color-light-purple: #7977F4;
+  --color-very-light-gray: #FDFDFD;
+  --color-light-purple-slightly-different: #7B79F6;
+  --color-medium-purple: #6965BA;
+  --color-very-light-gray-slightly-different: #FCFCFC;
+}
+
+/* Container styling */
+.logForm-container {
+  max-width: 400px;
+  margin: 10vh auto;
+  padding: 20px;
+  background-color: var(--color-light-lavender); /* Use color variable */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Title styling */
+.logForm-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: var(--color-dark-blue); /* Use color variable */
+}
+
+/* Form group styling */
+.logForm-group {
+  margin-bottom: 15px;
+}
+
+/* Label styling */
+.logForm-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: var(--color-medium-purple); /* Use color variable */
+}
+
+/* Input field styling */
+.logForm-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Error message styling */
+.logError-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Submit button styling */
+.logSubmit-button {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--color-dark-blue); /* Use color variable */
+  color: var(--color-white); /* Use color variable */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.logSubmit-button:hover {
+  background-color: var(--color-medium-purple); /* Use color variable */
+}
+
+/* Link styling */
+.logForm-links {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.logForm-links span {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.logForm-links a {
+  color: var(--color-dark-blue); /* Use color variable */
+  text-decoration: none;
+}
+
+.logForm-links a:hover {
+  text-decoration: underline;
+}

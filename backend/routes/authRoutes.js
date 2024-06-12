@@ -12,12 +12,10 @@ const {
     changePasswordController
 } = require('../controllers/authController');
 
-
 router.post('/login', loginController);
-router.post('/register',  registerController);
+router.post('/register', registerValidator, registerController);
 router.get('/logout', logoutController);
-router.get('/loggedIn', loggedInController);
-router.post('/', authValidator);
-router.put('/changePassword', changePasswordController);
+router.get('/loggedIn', authValidator, loggedInController);
+router.put('/changePassword',  changePasswordController);
 
 module.exports = router;

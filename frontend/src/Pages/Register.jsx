@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import '../CSS/register.css'
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -106,7 +107,7 @@ const Signup = () => {
   return (
     <>
       <div className="sigForm-container">
-        <h2 className="sigForm-title">Signup Account</h2>
+        <h2 className="sigForm-title">Register Account</h2>
         <form onSubmit={handleSubmit}>
           <div className="sigForm-group">
             <label className="sigForm-label" htmlFor="name">

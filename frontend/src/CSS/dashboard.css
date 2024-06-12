@@ -1,60 +1,187 @@
+:root {
+  --color-white: #FFFFFF;
+  --color-light-lavender: #F8F6FB;
+  --color-dark-blue: #3531A2;
+  --color-light-purple: #7977F4;
+  --color-medium-purple: #6965BA;
+  --color-light-gray: #F0F0F0;
+  --color-red: #D9534F;
+  --color-green: #5CB85C;
+  --color-light-blue: #D0D3F0;
+  --color-dark-gray: #343a40;
+  --color-yellow: #F0AD4E;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--color-light-lavender);
+  color: var(--color-dark-gray);
+  margin: 0;
+  padding: 0;
+}
+
 .container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 40px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  padding: 30px;
+  background-color: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
+}
+
+.add-problem-link, .logout-link {
+  text-decoration: none;
+  color: var(--color-dark-blue);
+  font-size: 18px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.add-problem-link:hover, .logout-link:hover {
+  background-color: var(--color-medium-purple);
+  color: var(--color-white);
+  text-decoration: none;
 }
 
 h1 {
-  margin-top: 0;
-  font-weight: bold;
-  color: #333;
+  font-size: 2.8em;
+  margin: 10px 0;
+  color: var(--color-dark-blue);
 }
 
-h2, h3 {
+.user-info {
+  background-color: var(--color-light-lavender);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.user-info h3 {
+  color: var(--color-dark-blue);
+}
+
+.user-icon {
+  font-size: 3.5em;
   margin-bottom: 10px;
-  color: #666;
+  color: var(--color-dark-blue);
 }
 
-ul {
+.solved-problems, .submissions {
+  background-color: var(--color-light-lavender);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.solved-problems h3, .submissions h3 {
+  display: flex;
+  align-items: center;
+  font-size: 1.7em;
+  color: var(--color-dark-blue);
+  margin-bottom: 20px;
+}
+
+.solved-problems h3 svg, .submissions h3 svg {
+  margin-right: 10px;
+}
+
+.solved-problems ul, .submissions ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-ul li {
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
+.solved-problems li, .submissions li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--color-light-gray);
 }
 
-ul li:last-child {
+.solved-problems li:last-child, .submissions li:last-child {
   border-bottom: none;
 }
 
-a {
-  text-decoration: none;
-  color: #337ab7;
-}
-
-a:hover {
-  color: #23527c;
-}
-
-.add-problem-link {
-  display: block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #337ab7;
-  color: #fff;
+.view-button {
+  background-color: var(--color-medium-purple);
+  color: var(--color-white);
   border: none;
   border-radius: 5px;
+  padding: 8px 12px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.add-problem-link:hover {
-  background-color: #23527c;
+.view-button:hover {
+  background-color: var(--color-light-purple);
 }
+
+.no-data {
+  color: var(--color-dark-blue);
+  font-size: 1em;
+  text-align: center;
+}
+
+.verdict {
+  font-weight: bold;
+}
+
+.verdict.accepted {
+  color: var(--color-green);
+}
+
+.verdict {
+  color: var(--color-red);
+}
+
+.login-link {
+  text-decoration: none;
+  font-size: 1.5em;
+  color: var(--color-dark-blue);
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.login-link:hover {
+  background-color: var(--color-light-blue);
+  color: var(--color-white);
+}
+
+.difficulty {
+  font-weight: bold;
+  border-radius: 5px;
+  color: var(--color-white);
+  display: inline-flex;
+  align-items: center; 
+  justify-content: center; 
+  width: 80px; 
+  height: 30px;
+}
+
+.difficulty.easy {
+  background-color: var(--color-green);
+}
+
+.difficulty.medium {
+  background-color: var(--color-yellow);
+}
+
+.difficulty.hard {
+  background-color: var(--color-red);
+}
+

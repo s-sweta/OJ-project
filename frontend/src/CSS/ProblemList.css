@@ -1,52 +1,150 @@
+:root {
+  --color-white: #FFFFFF;
+  --color-light-lavender: #F8F6FB;
+  --color-dark-blue: #3531A2;
+  --color-white-slightly-different: #FEFEFE;
+  --color-off-white: #FFFFFE;
+  --color-light-purple: #7977F4;
+  --color-very-light-gray: #FDFDFD;
+  --color-light-purple-slightly-different: #7B79F6;
+  --color-medium-purple: #6965BA;
+  --color-very-light-gray-slightly-different: #FCFCFC;
+}
+
 .problem-list {
-  padding: 20px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: var(--color-light-lavender);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
 }
 
 .problem-list h1 {
-  font-size: 24px;
+  text-align: center;
+  font-size: 28px;
   margin-bottom: 20px;
+  color: var(--color-dark-blue);
 }
 
-.problem {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  margin-bottom: 20px;
+.problem-list ul.problem {
+  list-style-type: none;
+  padding: 0;
 }
 
-.problem h2 {
-  font-size: 20px;
+.problem-list ul.problem li {
+  padding: 5px;
+  margin-bottom: 15px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-very-light-gray);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.problem-list ul.problem li .problem-details {
+  flex-grow: 1;
+}
+
+.problem-list ul.problem li h2 {
+  font-size: 22px;
   margin-bottom: 10px;
+  color: var(--color-medium-purple);
+  font-weight: bolder;
 }
 
-.problem p {
-  font-size: 16px;
-  margin-bottom: 10px;
+.problem-list ul.problem li p {
+  color: var(--color-dark-blue);
 }
 
-.problem a {
+.problem-list ul.problem li .solve-edit-problem {
+  display: flex;
+  align-items: center;
+}
+
+.problem-list ul.problem li a,
+.problem-list ul.problem li button {
   display: inline-block;
   margin-right: 10px;
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-}
-
-.problem a:hover {
-  background-color: #0056b3;
-}
-
-.problem button {
-  padding: 5px 10px;
-  background-color: #dc3545;
-  color: #fff;
+  padding: 10px 15px;
+  font-size: 14px;
   border: none;
   border-radius: 5px;
+  text-decoration: none;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.problem button:hover {
-  background-color: #c82333;
+.problem-list ul.problem li a {
+  background-color: var(--color-light-purple);
+  color: var(--color-white);
+}
+
+.problem-list ul.problem li a:hover {
+  background-color: var(--color-light-purple-slightly-different);
+}
+
+.problem-list ul.problem li button {
+  background-color: var(--color-dark-blue);
+  color: var(--color-white);
+}
+
+.difficulty {
+  font-weight: bold;
+  border-radius: 5px;
+  color: var(--color-white);
+  display: inline-flex;
+  align-items: center; 
+  justify-content: center; 
+  width: 80px; 
+  height: 30px;
+}
+
+.difficulty.easy {
+  background-color: var(--color-green);
+}
+
+.difficulty.medium {
+  background-color: var(--color-yellow);
+}
+
+.difficulty.hard {
+  background-color: var(--color-red);
+}
+
+
+.problem-list ul.problem li button:hover {
+  background-color: var(--color-medium-purple);
+}
+
+@media (max-width: 768px) {
+  .problem-list {
+    padding: 15px;
+  }
+
+  .problem-list h1 {
+    font-size: 24px;
+  }
+
+  .problem-list ul.problem li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .problem-list ul.problem li .solve-edit-problem {
+    margin-top: 10px;
+  }
+
+  .problem-list ul.problem li h2 {
+    font-size: 20px;
+  }
+
+  .problem-list ul.problem li a,
+  .problem-list ul.problem li button {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import '../CSS/login.css'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,7 +22,8 @@ const Login = () => {
       }
     };
     verifyCookie();
-  },[]);
+  }, []);
+  
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
@@ -30,6 +32,7 @@ const Login = () => {
   const { email, password } = inputValue;
   const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState("");
+
   const validateForm = (data) => {
     const errors = {};
     if (!data.email.trim()) {
@@ -40,6 +43,7 @@ const Login = () => {
     }
     return errors;
   };
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue({
@@ -56,9 +60,7 @@ const Login = () => {
       try {
         const response = await axios.post(
           "http://localhost:5000/login",
-          {
-            ...inputValue,
-          },
+          { ...inputValue },
           { withCredentials: true }
         );
         const { success, message } = response.data;
@@ -68,16 +70,13 @@ const Login = () => {
             password: "",
           });
           navigate("/dashboard");
-          // console.log(response);
         } else {
-          // console.log(success);
           setInputValue({
             email: "",
             password: "",
           });
-          setSubmitError("login error");
-          console.log("login error");
-          // console.log(message);
+          setSubmitError("Login error");
+          console.log("Login error");
         }
       } catch (error) {
         setInputValue({
@@ -137,9 +136,14 @@ const Login = () => {
           <button className="logSubmit-button" type="submit">
             Submit
           </button>
-          <span>
-            &nbsp; Don't have an Account <Link to={"/signup"}>SignUp</Link>
-          </span>
+          <div className="logForm-links">
+            <span>
+              Don't have an Account? <Link to="/register">Register</Link>
+            </span>
+            <span>
+              Forgot your password? <Link to="/forgot-password">Reset Password</Link>
+            </span>
+          </div>
           {submitError && <span className="logError-message">{submitError}</span>}
         </form>
       </div>

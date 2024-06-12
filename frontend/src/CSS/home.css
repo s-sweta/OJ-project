@@ -1,0 +1,173 @@
+/* Define color variables with clearer names */
+:root {
+    --white: #FFFFFF;
+    --lavender: #F8F6FB;
+    --dark-blue: #3531A2;
+    --light-purple: #7977F4;
+    --medium-purple: #6965BA;
+    --light-gray: #FCFCFC;
+}
+
+/* Base styles for the home container */
+.home-container {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--white);
+    color: var(--dark-blue);
+    min-height: 80vh;
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    align-items: center;
+    justify-content: center; /* Center content */
+    padding: 10px;
+    border: 3px solid var(--light-purple);
+    margin: -25px 20px; /* Reduce margin for better spacing */
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    gap: 20px; /* Add spacing between elements */
+}
+
+/* Left section with flex column layout */
+.home-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 1 40%; /* Allow flexible width */
+    padding: 20px;
+}
+
+/* Header styling */
+.home-header {
+    text-align: center;
+    margin-bottom: 80px; /* Adjust margin for spacing */
+}
+
+/* Title styling */
+.home-title {
+    font-size: 3em; /* Adjust font size for better scaling */
+    color: var(--dark-purple);
+    margin: 0;
+}
+
+/* Content section with background and padding */
+.home-content {
+    background-color: var(--lavender);
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Styling for text within content */
+.home-content h2,
+.home-content p {
+    margin: 10px;
+    white-space: pre-wrap;
+    font-size: 1.25em; /* Use relative units for better scalability */
+    color: var(--medium-purple);
+}
+
+/* Centered and bold header in content */
+.home-content h2 {
+    text-align: center;
+    font-weight: bolder;
+    color: var(--light-purple);
+}
+
+/* Banner image styling */
+.home-banner {
+    flex: 1 1 40%; /* Allow flexible width */
+    max-width: 100%;
+    height: auto;
+    max-height: 70vh;
+    border-radius: 10px; /* Round corners */
+}
+
+/* Typing animation */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+.typing h2,
+.typing p {
+    display: inline-block;
+    animation: typing 3s steps(40, end) forwards;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid var(--light-purple);
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .home-container {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    .home-left,
+    .home-banner {
+        width: 100%; /* Full width for each section */
+    }
+
+    .home-title {
+        font-size: 2em; /* Smaller font size for mobile */
+    }
+
+    .home-content {
+        padding: 20px;
+    }
+}
+
+/* Rolling icon container styling */
+.rolling-icon-container {
+    width: 100%;
+    overflow: hidden; /* Ensures the icon doesn't go beyond the container */
+    position: relative;
+    height: 100px; /* Set a height that fits your layout */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dark-blue);
+}
+
+/* SVG Icon rolling and moving animation */
+.rolling-icon {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    animation: roll-horizontal 5s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite,
+               roll-rotate 1.25s linear infinite;
+}
+
+/* Keyframes for horizontal back-and-forth motion */
+@keyframes roll-horizontal {
+    0% {
+      left: 0px; /* Start just outside the left edge */
+    }
+    50% {
+      left: calc(100% - 50px); /* Move to the right edge */
+      transform: translateY(-50%) scaleX(-1); /* Flip horizontally */
+    }
+    100% {
+      left: 0px; /* Move back to the starting position */
+    }
+}
+
+/* Keyframes for continuous rotation */
+@keyframes roll-rotate {
+    0% {
+      transform: translateY(-50%) rotate(0deg);
+    }
+    100% {
+      transform: translateY(-50%) rotate(360deg);
+    }
+}

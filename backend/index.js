@@ -3,11 +3,10 @@ const dotenv = require('dotenv').config();
 const cors = require('cors');
 const { DBConnection } = require("./database/db");
 const cookieParser = require('cookie-parser');
-
+const bodyParser = require('body-parser');
 
 const authRoutes = require('./routes/authRoutes');
 const problemRoutes = require('./routes/problemRoutes');
-const compilerRoutes = require('./routes/compilerRoutes');
 const submitRoutes = require('./routes/submitRoutes');
 
 
@@ -18,7 +17,7 @@ DBConnection();
 
 
 const corsOptions = {
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5174"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   };
@@ -28,14 +27,14 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 // Routes
 app.use('/', authRoutes);
 app.use('/problems', problemRoutes);
-app.use('/run', compilerRoutes);
 app.use('/submit', submitRoutes);
 
-// Error handling middleware (move to the end)
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Internal Server Error');

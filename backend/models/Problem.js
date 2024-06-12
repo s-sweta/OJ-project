@@ -40,8 +40,28 @@ const problemsSchema = new mongoose.Schema({
     default: null,
     trim: true,
   },
+  constraints: {
+    type: String,
+    default: null,
+    trim: true,
+  },
+  inputFormat: {
+    type: String,
+    default: null,
+    trim: true,
+  },
+  outputFormat: {
+    type: String,
+    default: null,
+    trim: true,
+  },
+  totalSubmissions: {
+    type: Number,
+    default: 0
+  },
   testCases: [testCaseSchema], // Array of test cases
-}, { timestamps: true });
+  }, { timestamps: true });
 
 module.exports = mongoose.model("Problem", problemsSchema);
+
 
