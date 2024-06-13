@@ -70,7 +70,6 @@ const Login = () => {
             password: "",
           });
           navigate("/dashboard");
-          console.log(process.env.SERVER_URL)
         } else {
           setInputValue({
             email: "",

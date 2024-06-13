@@ -10,7 +10,8 @@ const setTokenCookie = (res, token) => {
     const options = {
         expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
         httpOnly: true,
-        secure: true,
+        secure: true, 
+        sameSite: 'None'
     };
     res.cookie("token", token, options);
 };
