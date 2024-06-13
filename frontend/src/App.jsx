@@ -10,13 +10,15 @@ import ProblemList from './pages/ProblemList'
 import EditProblem from './pages/UpdateProblem'
 import AddProblem from './pages/AddProblem'
 import ProblemPage from './pages/problem'
-import SubmitCode from './pages/SubmitCode'
 import axios from 'axios'
 import { AuthProvider } from '../context/AuthContext';
 import { Toaster } from 'react-hot-toast'
 
-axios.defaults.baseURL = 'http://localhost:5000';
+
+
+axios.defaults.baseURL =import.meta.env.VITE_SERVER_URL;
 axios.defaults.withCredentials = true;
+
 
 function App() {
   return (
@@ -34,7 +36,6 @@ function App() {
         <Route path="/problems/:id" element={<EditProblem />} />
         <Route path="/addProblem" element={<AddProblem />} />
         <Route path="/problem/:id" element={<ProblemPage/>}/>
-        <Route path="/submit/:problemId" element={<SubmitCode />} />
       </Routes>
     </AuthProvider>
   )

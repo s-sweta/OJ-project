@@ -5,9 +5,9 @@ import '../CSS/updateProblem.css';
 
 const UpdateProblem = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // Get problem ID from URL params
+  const { id } = useParams(); 
 
-  // State for form values
+  
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [difficulty, setDifficulty] = useState("");
@@ -17,10 +17,10 @@ const UpdateProblem = () => {
   const [inputFormat, setInputFormat] = useState("");
   const [outputFormat, setOutputFormat] = useState("");
   
-  // State for test cases
+  
   const [testCases, setTestCases] = useState([{ input: '', expectedOutput: '' }]);
 
-  // Effect to fetch problem details on component mount
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,38 +37,35 @@ const UpdateProblem = () => {
         setConstraints(constraints);
         setInputFormat(inputFormat);
         setOutputFormat(outputFormat);
-        setTestCases(testCases || [{ input: '', expectedOutput: '' }]); // Initialize test cases, or set empty array if not provided
+        setTestCases(testCases || [{ input: '', expectedOutput: '' }]);
       } catch (error) {
         console.error("Error fetching problem:", error);
       }
     };
     fetchData();
-  }, [id]); // Dependency array to re-run effect when ID changes
+  }, [id]); 
 
-  // Function to handle form submission
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const updatedProblem = { title, description, difficulty, sampleInput, sampleOutput, constraints, inputFormat, outputFormat, testCases };
     try {
-      // Send PUT request to update problem
       await axios.put(`http://localhost:5000/problems/${id}`, updatedProblem, {
-        withCredentials: true, // Include cookies in request
+        withCredentials: true, 
       });
       console.log("Problem Successfully Updated");
-      navigate("/problems"); // Navigate to problem list after successful update
+      navigate("/problems"); 
     } catch (error) {
       console.error("Error updating problem:", error);
     }
   };
 
-  // Function to handle changes in test case input fields
   const handleTestCaseChange = (index, field, value) => {
     const updatedTestCases = [...testCases];
     updatedTestCases[index][field] = value;
     setTestCases(updatedTestCases);
   };
 
-  // Function to add new test case
   const handleAddTestCase = () => {
     setTestCases([...testCases, { input: '', expectedOutput: '' }]);
   };

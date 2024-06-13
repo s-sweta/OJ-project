@@ -35,7 +35,7 @@ const ProblemPage = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/loggedIn', { withCredentials: true });
+                const response = await axios.get('/loggedIn', { withCredentials: true });
                 setUser(response.data.user);
             } catch (error) {
                 console.error('Error getting user:', error);
@@ -47,7 +47,7 @@ const ProblemPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/problems/${problemId}`, { withCredentials: true });
+                const response = await axios.get(`/problems/${problemId}`, { withCredentials: true });
                 const { title, description, difficulty, sampleInput, sampleOutput, constraints, inputFormat, outputFormat, testCases } = response.data;
                 setTitle(title);
                 setDescription(description);
@@ -74,7 +74,7 @@ const ProblemPage = () => {
     const handleRun = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8000/run', {
+            const response = await fetch(`${import.meta.env.VITE_CODE_URL}/run`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ language, code, input }),
@@ -98,11 +98,11 @@ const ProblemPage = () => {
             return;
         }
     
-        let verdict = "Runtime Error"; // Default verdict in case of an error
-        let isSolved = false; // Default isSolved status
+        let verdict = "Runtime Error"; 
+        let isSolved = false; 
     
         try {
-            const response = await fetch('http://localhost:8000/submit', {
+            const response = await fetch(`${import.meta.env.VITE_CODE_URL}/submit`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ language, code, testcases }),
@@ -128,7 +128,7 @@ const ProblemPage = () => {
         }
     
         try {
-            await axios.post(`http://localhost:5000/submit/${problemId}/${user.id}`, {
+            await axios.post(`/submit/${problemId}/${user.id}`, {
                 language,
                 code,
                 verdict,
@@ -143,7 +143,6 @@ const ProblemPage = () => {
         { value: "c", label: "C" },
         { value: "cpp", label: "C++" },
         { value: "py", label: "Python" },
-        { value: "java", label: "Java" },
     ];
 
     const themes = [

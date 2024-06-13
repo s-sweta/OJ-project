@@ -24,7 +24,7 @@ const ResetPassword = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        "http://localhost:5000/changePassword",
+        '/changePassword',
         { email, username, password, newPassword },
         { withCredentials: true }
       );

@@ -9,7 +9,7 @@ const Login = () => {
     const verifyCookie = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:5000",
+          "/",
           {},
           { withCredentials: true }
         );
@@ -59,7 +59,7 @@ const Login = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/login",
+          "/login",
           { ...inputValue },
           { withCredentials: true }
         );
@@ -70,6 +70,7 @@ const Login = () => {
             password: "",
           });
           navigate("/dashboard");
+          console.log(process.env.SERVER_URL)
         } else {
           setInputValue({
             email: "",

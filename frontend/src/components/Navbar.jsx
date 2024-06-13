@@ -12,7 +12,7 @@ export default function Navbar() {
     const {  logout } = useAuth();
 
     useEffect(() => {
-        axios.get('http://localhost:5000/loggedIn', { withCredentials: true })
+        axios.get('/loggedIn', { withCredentials: true })
           .then(response => {
             if (response.data.success) {
               setUser(response.data.user);

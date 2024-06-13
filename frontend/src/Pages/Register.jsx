@@ -60,7 +60,7 @@ const Signup = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/register",
+          "/register",
           {
             ...inputValue,
           },
@@ -80,24 +80,10 @@ const Signup = () => {
         
         console.log(response);
       } catch (error) {
-        // setInputValue({
-        //   name: "",
-        //   username: "",
-        //   email: "",
-        //   password: "",
-        // });
-        // setConfirmPassword("");
         setSubmitError(error.response.data.message);
         console.log(error.response.data.message);
       }
     } else {
-      // setInputValue({
-      //   name: "",
-      //   username: "",
-      //   email: "",
-      //   password: "",
-      // });
-      // setConfirmPassword("");
       setSubmitError("form submission failed");
       console.log("form submission failed");
     }

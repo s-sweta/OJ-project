@@ -13,7 +13,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:5000/loggedIn', { withCredentials: true })
+    axios.get('/loggedIn', { withCredentials: true })
       .then(response => {
         if (response.data.success) {
           setUser(response.data.user);
@@ -37,7 +37,7 @@ export default function Dashboard() {
 
   const fetchSubmissions = async () => {
     try {
-      const response = await axios.post(`http://localhost:5000/submit/${user.id}`, {}, { withCredentials: true });
+      const response = await axios.post(`/submit/${user.id}`, {}, { withCredentials: true });
       if (response.data.success) {
         setSubmissions(response.data.submissions);
       } else {
@@ -50,7 +50,7 @@ export default function Dashboard() {
 
   const fetchSolvedProblems = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/submit/problem/${user.id}`, { withCredentials: true });
+      const response = await axios.get(`/submit/problem/${user.id}`, { withCredentials: true });
       if (response.data.success) {
         setSolvedProblems(response.data.solvedProblems);
       } else {
@@ -62,7 +62,7 @@ export default function Dashboard() {
   };
 
   const logout = () => {
-    axios.get('http://localhost:5000/logout', { withCredentials: true })
+    axios.get('/logout', { withCredentials: true })
       .then(response => {
         setUser(null);
         setIsLogged(false);

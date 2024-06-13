@@ -28,7 +28,7 @@ const AddProblem = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/problems', formData);
+            const response = await axios.post('/problems', formData);
             console.log('Problem successfully added:', response.data);
             navigate("/problems");
             // Display success message or redirect to problem list

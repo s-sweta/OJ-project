@@ -7,7 +7,7 @@ const ProblemList = () => {
     const [problems, setProblems] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/problems')
+        axios.get('/problems')
             .then(response => {
                 setProblems(response.data);
             })
@@ -23,7 +23,7 @@ const ProblemList = () => {
         }
 
         try {
-            await axios.delete(`http://localhost:5000/problems/${id}`);
+            await axios.delete(`/problems/${id}`);
             
             setProblems(problems.filter(problem => problem._id !== id));
             console.log('Problem deleted successfully');
