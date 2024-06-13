@@ -1,6 +1,8 @@
 .env
 node_modules
-codes
-outputs
-inputs
+Codes
+Outputs
+Inputs
 .vscode
+aws
+awscliv2.zip
