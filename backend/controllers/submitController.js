@@ -157,4 +157,71 @@ const getAllSubmissionsForProblem = async (req, res) => {
     }
 };
 
-module.exports = { submitSolution, getAllMySubmissions, getSolvedProblems, getAllSubmissionsForProblem  };
+const getUserAnalytics = async (req, res) => {
+    const { userId } = req.params;
+
+    // Validate userId
+    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ success: false, error: 'Invalid user ID' });
+    }
+
+    try {
+        // Aggregation pipeline to get the unique solved problems by difficulty
+        const solvedProblemsByDifficulty = await Submission.aggregate([
+            { $match: { userId: new mongoose.Types.ObjectId(userId), verdict: 'Accepted' } },
+            { $sort: { problemId: 1, submissionDateTime: -1 } },
+            { $group: {
+                _id: "$problemId",
+                latestSubmission: { $first: "$$ROOT" }
+            }},
+            { $lookup: {
+                from: 'problems',
+                localField: '_id',
+                foreignField: '_id',
+                as: 'problemDetails'
+            }},
+            { $unwind: '$problemDetails' },
+            { $group: {
+                _id: '$problemDetails.difficulty',
+                count: { $sum: 1 }
+            }},
+            { $project: {
+                _id: 0,
+                difficulty: '$_id',
+                count: 1
+            }}
+        ]);
+
+        // Get total unique solved problems
+        const totalSolvedProblems = await Submission.aggregate([
+            { $match: { userId: new mongoose.Types.ObjectId(userId), verdict: 'Accepted' } },
+            { $group: {
+                _id: "$problemId",
+                latestSubmission: { $first: "$$ROOT" }
+            }},
+            { $count: 'totalSolvedProblems' }
+        ]);
+
+        // Format the response
+        const analytics = {
+            totalSolved: totalSolvedProblems[0]?.totalSolvedProblems || 0,
+            easy: 0,
+            medium: 0,
+            hard: 0
+        };
+
+        solvedProblemsByDifficulty.forEach(d => {
+            analytics[d.difficulty.toLowerCase()] = d.count;
+        });
+
+        // Return the analytics data
+        res.json({ success: true, analytics });
+    } catch (error) {
+        console.error('Error fetching user analytics:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+};
+
+
+
+module.exports = { submitSolution, getAllMySubmissions, getSolvedProblems, getAllSubmissionsForProblem, getUserAnalytics  };
