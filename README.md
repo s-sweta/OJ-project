@@ -33,6 +33,11 @@ https://codearena.netlify.app/
 
 ![Dashboard](https://github.com/s-sweta/Online_Judge/assets/121677567/15fb5488-0011-4bdd-911f-08fd9b31c1ee)
 
+### Analytics
+
+![image](https://github.com/s-sweta/Online_Judge/assets/121677567/e3b17d92-103b-402c-9cef-8526587851ad)
+
+
 ### Problem List
 
 ![Problem List](https://github.com/s-sweta/Online_Judge/assets/121677567/7b16ac97-2d9f-4d44-9457-b741cd602db3)
