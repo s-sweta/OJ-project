@@ -3,7 +3,7 @@
 # CodeArena
 
 CodeArena is an online judge platform designed for coding enthusiasts to solve programming problems, compile and run code, and submit solutions.
-https://codearena.netlify.app/
+
 
 ![Home Page](https://github.com/s-sweta/Online_Judge/assets/121677567/bddbcbb3-0e4a-4f0f-89ac-919b814a144d)
 
